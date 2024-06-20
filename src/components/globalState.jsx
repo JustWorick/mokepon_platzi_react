@@ -1,16 +1,21 @@
 import React, { createContext, useState } from 'react';
 
-// Crea el contexto
-export const GlobalStateContext = createContext();
+const GlobalStateContext = createContext();
 
-// Proveedor del contexto
-export const GlobalStateProvider = ({ children }) => {
-  const [isActive, setIsActive] = useState(false);
+const GlobalStateProvider = ({ children }) => {
+  const [activeComponent, setActiveComponent] = useState('Intro');
+
+  const toggleComponent = (component) => {
+    setActiveComponent(component);
+  };
 
   return (
-    <GlobalStateContext.Provider value={{ isActive, setIsActive }}>
+    <GlobalStateContext.Provider value={{ activeComponent, setActiveComponent, toggleComponent }}>
       {children}
     </GlobalStateContext.Provider>
   );
 };
+
+export { GlobalStateContext, GlobalStateProvider };
+
 
