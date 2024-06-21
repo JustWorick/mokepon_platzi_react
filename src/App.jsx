@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import Intro from './pantallas/intro.jsx'
 import PantallaPrincipal from './pantallas/pantallaPrincipal.jsx'
 import PantallaSelect from './pantallas/pantallaSelect.jsx'
@@ -8,7 +8,11 @@ import { GlobalStateContext } from './components/globalState.jsx';
 import './style/App.css'
 
 function App() {
-  const { activeComponent } = useContext(GlobalStateContext);
+  const { activeComponent, jugador } = useContext(GlobalStateContext);
+
+  useEffect(() => {
+    console.log("Nuevo jugador:", jugador);
+  }, [jugador]);
 
   return (
     <div className='contenedor d-flex justify-content-center align-items-center'>
