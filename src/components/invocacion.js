@@ -23,3 +23,8 @@ export function crearInvocaciones(){
     let invoList = [brayan, paco]
     return invoList
 }
+
+export function findInvocacionById(id, contextoGlobal){
+    let divInvoElegida = contextoGlobal.find((element) => element.id === id)
+    return divInvoElegida
+}
