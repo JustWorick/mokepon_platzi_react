@@ -4,13 +4,23 @@ const GlobalStateContext = createContext();
 
 const GlobalStateProvider = ({ children }) => {
   const [activeComponent, setActiveComponent] = useState('Intro');
+  const [jugador, setJugador] = useState(null);
+  const [invocaciones, setInvocaciones] = useState([]);
 
   const toggleComponent = (component) => {
     setActiveComponent(component);
   };
 
   return (
-    <GlobalStateContext.Provider value={{ activeComponent, setActiveComponent, toggleComponent }}>
+    <GlobalStateContext.Provider value={{ 
+      activeComponent,
+      setActiveComponent, 
+      toggleComponent, 
+      jugador,
+      setJugador,
+      invocaciones,
+      setInvocaciones, 
+      }}>
       {children}
     </GlobalStateContext.Provider>
   );
