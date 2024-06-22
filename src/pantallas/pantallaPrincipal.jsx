@@ -18,6 +18,13 @@ const PantallaPrincipal = ({ isActive }) => {
     console.log(`El nombre es: ${inputValue}`);
   
     const player = new Jugador(inputValue); 
+
+
+    // probar las habilidades -------------------------------
+    const enemigo = new
+
+
+    // ------------------------------------------
     setJugador(player); 
     toggleComponent('PantallaSelect');
 

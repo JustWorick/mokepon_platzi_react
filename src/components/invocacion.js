@@ -1,25 +1,35 @@
 
 
 export class Invocacion {
-    constructor(id, nombre, tipo, imgChica, imgGrande, imgPelea, vida) {
+    constructor(id, nombre, images, stats) {
       this.id = id;
       this.nombre = nombre;
-      this.tipo = tipo;
-      this.imgChica = imgChica;
-      this.imgGrande = imgGrande;
-      this.imgPelea = imgPelea;
-      this.vidaMaxima = vida;
-      this.vidaActual = null;
-    }
-
-    modificarVida(vida){
-        this.vida += vida
+      this.images = images;
+      this.stats = stats;
+      this.habilidades = null;
+      this.estados = [];
     }
 }
 
+const brayanImages = {
+    imgChica: '../../assets/personajes/bayanChico.png',
+    imgGrande: '../../assets/personajes/brayanGrande.png',
+    imgPelea: 'src'
+}
+const caboRamirezImages = {
+    imgChica: '../../public/assets/personajes/caboRamirezChico.png',
+    imgGrande: '../../assets/personajes/caboRamirez.png',
+    imgPelea: 'src'
+}
+
+const statsInvoIniciales = [
+    {id:0, invocacion: 'Brayan', saludMaxima: 90, saludActual: null, precision: 95, velocidad: 10, blindaje : 9, evasion: 16, probCritico: 12, multiCritico: 1.1},
+    {id:1, invocacion: 'Ramirez', saludMaxima: 110, saludActual: null, precision: 95, velocidad: 10, blindaje : 18, evasion: 8, probCritico: 6, multiCritico: 1.1}
+]
+
 export function crearInvocaciones(){
-    let brayan = new Invocacion(0, 'Brayan Anuel', 'pastero', '../../public/assets/personajes/bayanChico.png', '../../public/assets/personajes/brayanGrande.png', 'src', 90)
-    let paco = new Invocacion(1, 'Cabo Ramirez', 'jalero', '../../public/assets/personajes/caboRamirezChico.png', '../../public/assets/personajes/caboRamirez.png', 'src', 110)
+    let brayan = new Invocacion(0, 'Brayan Anuel', brayanImages, statsInvoIniciales[0])
+    let paco = new Invocacion(1, 'Cabo Ramirez', caboRamirezImages, statsInvoIniciales[1])
     let invoList = [brayan, paco]
     return invoList
 }
