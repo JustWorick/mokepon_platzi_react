@@ -1,19 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { GlobalStateContext } from '../components/globalState.jsx';
-import { crearInvocaciones, findInvocacionById } from '../components/invocacion.js';
+import { findInvocacionById } from '../components/invocacion.js';
 
 const PantallaSelect = ({ isActive }) => {
-  const { toggleComponent, invocaciones, setInvocaciones } = useContext(GlobalStateContext);
+  const { toggleComponent, invocaciones  } = useContext(GlobalStateContext);
   const [sectionSuperior, setSectionSuperior] = useState(null)
 
-  useEffect(() => {
-    let invoList = crearInvocaciones()
-    setInvocaciones(invoList)
-  },[])
-
-  function elegirInvocacion(id){
-    setSectionSuperior(id)
-  }
 
   let invoDivSuperior = findInvocacionById(sectionSuperior, invocaciones)
 

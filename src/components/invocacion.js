@@ -6,7 +6,7 @@ export class Invocacion {
       this.nombre = nombre;
       this.images = images;
       this.stats = stats;
-      this.habilidades = null;
+      this.habilidades = [];
       this.estados = [];
     }
 }
@@ -17,7 +17,7 @@ const brayanImages = {
     imgPelea: 'src'
 }
 const caboRamirezImages = {
-    imgChica: '../../public/assets/personajes/caboRamirezChico.png',
+    imgChica: '../../assets/personajes/caboRamirezChico.png',
     imgGrande: '../../assets/personajes/caboRamirez.png',
     imgPelea: 'src'
 }
@@ -29,8 +29,10 @@ const statsInvoIniciales = [
 
 export function crearInvocaciones(){
     let brayan = new Invocacion(0, 'Brayan Anuel', brayanImages, statsInvoIniciales[0])
-    let paco = new Invocacion(1, 'Cabo Ramirez', caboRamirezImages, statsInvoIniciales[1])
-    let invoList = [brayan, paco]
+    let bairon = new Invocacion(1, 'Bairon', brayanImages, statsInvoIniciales[0])
+    let kevin = new Invocacion(2, 'Kevin', brayanImages, statsInvoIniciales[0])
+    let paco = new Invocacion(3, 'Cabo Ramirez', caboRamirezImages, statsInvoIniciales[1])
+    let invoList = [brayan, bairon, kevin, paco]
     return invoList
 }
 

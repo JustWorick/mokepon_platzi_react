@@ -2,9 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { GlobalStateContext } from '../components/globalState.jsx';
 import { Jugador } from '../components/jugador.js';
 
-
 const PantallaPrincipal = ({ isActive }) => {
-  const { toggleComponent, jugador, setJugador } = useContext(GlobalStateContext);
+  const { toggleComponent, jugador, setJugador} = useContext(GlobalStateContext);
 
   
   const [inputValue, setInputValue] = useState('Juanito');
@@ -14,22 +13,11 @@ const PantallaPrincipal = ({ isActive }) => {
   };
   
   const handleSubmit = (event) => {
-    event.preventDefault(); // evita que se recargue la pagina
-    console.log(`El nombre es: ${inputValue}`);
-  
-    const player = new Jugador(inputValue); 
-
-
-    // probar las habilidades -------------------------------
-    const enemigo = new
-
-
-    // ------------------------------------------
+    event.preventDefault(); 
+    const player = new Jugador(inputValue);
     setJugador(player); 
     toggleComponent('PantallaSelect');
-
     console.log(jugador);
-    console.log(player);
   };
   
 

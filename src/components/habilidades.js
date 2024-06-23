@@ -97,15 +97,63 @@ export function crearHabilidades(){
                 console.log('Uso Tajear');
             }
         })
-    const hab2 = new Habilidad(1, 'Cogotear', 'Cortante', Infinity, 'Ataca y tiene la probabilidad de bajar la defenza',
-        () => {
-            let exito = probExito(this.caster.stats.precision, 82, this.objetivo.stats.evasion)
-            if(exito === true){
-                let critico = propCritico(this.caster)
+        const hab1copi1 = new Habilidad(1, 'Tajearcopia1', 'Cortante', Infinity, 'Corta a sus Enemigos con movimientos que vio en peliculas, tiene posibilidad de golpear 2 veces',
+            () => {
+                let exito = probExito(this.caster.stats.precision, 82, this.objetivo.stats.evasion)
+                let numAtaques = 1;
+                if(getRandomNumber(0,100) < 10) {
+                    numAtaques++
+                }
+                for (let index = 0; index < numAtaques; index++) {
+                    if(exito === true){
+                        let critico = propCritico(this.caster)
+                        let damage = getRandomNumber(-12,-6)
+                        if(critico === true) {
+                            damage *= this.caster.stats.multiCritico
+                        }
+                        damage -= (damage * this.objetivo.stats.blindaje / 100)  
+                        this.objetivo.stats.saludActual += damage
+                        console.log(damage);
+                        probSangrado(this.objetivo)
+                    } else {
+                        console.log('El ataque Fallo');
+                    }
+                    console.log('Uso Tajear');
+                }
+            })
+            const hab1copia2 = new Habilidad(2, 'Tajearcopia2', 'Cortante', Infinity, 'Corta a sus Enemigos con movimientos que vio en peliculas, tiene posibilidad de golpear 2 veces',
+                () => {
+                    let exito = probExito(this.caster.stats.precision, 82, this.objetivo.stats.evasion)
+                    let numAtaques = 1;
+                    if(getRandomNumber(0,100) < 10) {
+                        numAtaques++
+                    }
+                    for (let index = 0; index < numAtaques; index++) {
+                        if(exito === true){
+                            let critico = propCritico(this.caster)
+                            let damage = getRandomNumber(-12,-6)
+                            if(critico === true) {
+                                damage *= this.caster.stats.multiCritico
+                            }
+                            damage -= (damage * this.objetivo.stats.blindaje / 100)  
+                            this.objetivo.stats.saludActual += damage
+                            console.log(damage);
+                            probSangrado(this.objetivo)
+                        } else {
+                            console.log('El ataque Fallo');
+                        }
+                        console.log('Uso Tajear');
+                    }
+                })
+    // const hab2 = new Habilidad(1, 'Cogotear', 'Cortante', Infinity, 'Ataca y tiene la probabilidad de bajar la defenza',
+    //     () => {
+    //         let exito = probExito(this.caster.stats.precision, 82, this.objetivo.stats.evasion)
+    //         if(exito === true){
+    //             let critico = propCritico(this.caster)
 
-            }
-        }
-    )
+    //         }
+    //     }
+    // )
     // const hab3 = new Habilidad(2, 'Intimidar', 'Normal', 3)
     // const hab4 = new Habilidad(3, 'Puñala Maletera', 'Perforante', Infinity)
     // const hab5 = new Habilidad(4, 'Pastita llica', 'Pasta', 3)
@@ -117,6 +165,6 @@ export function crearHabilidades(){
     // const hab11 = new Habilidad(10, 'Confiscar Sustancias', 'Normal', 1)
     // const hab12 = new Habilidad()
     // let habilidadesList = [hab1,hab2,hab3,hab4,hab5,hab6,hab7,hab8,hab9,hab10,hab11]
-    let habilidadesList = [hab1,hab2]
+    let habilidadesList = [hab1,hab1copi1,hab1copia2]
     return habilidadesList;
 }
