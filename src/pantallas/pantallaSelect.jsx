@@ -3,18 +3,34 @@ import { GlobalStateContext } from '../components/globalState.jsx';
 import { findInvocacionById } from '../components/invocacion.js';
 
 const PantallaSelect = ({ isActive }) => {
-  const { toggleComponent, invocaciones  } = useContext(GlobalStateContext);
+  const { toggleComponent, invocaciones, jugador, enemigo  } = useContext(GlobalStateContext);
   const [sectionSuperior, setSectionSuperior] = useState(null)
 
 
   let invoDivSuperior = findInvocacionById(sectionSuperior, invocaciones)
+
+  const probarHabilidadJugador = () => {
+    if (jugador && jugador.invocacionElegida && jugador.invocacionElegida.habilidades.length > 0) {
+      jugador.invocacionElegida.habilidades[0].usarHabilidad()
+    }
+  };
+
+  const probarHabilidadEnemigo = () => {
+    if (enemigo && enemigo.invocacionElegida && enemigo.invocacionElegida.habilidades.length > 0) {
+      enemigo.invocacionElegida.habilidades[0].usarHabilidad()
+    }
+  };
 
   return (
     <div className={`${isActive ? 'active' : 'inactive'} h-100`}>
       <div className='d-flex flex-column justify-content-center align-items-center h-100 w-100'>
         <section className='h-75 w-100'>
           { sectionSuperior == null && (
-            <p>Elige un pj</p>
+            <>
+              <p>Elige un pj</p>
+              <button className='btn btn-primary' onClick={probarHabilidadJugador}>Probar Habilidad Jugador</button>
+              <button className='btn btn-danger' onClick={probarHabilidadEnemigo}>Probar Habilidad Enemigo</button>
+            </>
           ) }
           { sectionSuperior != null && (
             <div className='d-flex justify-content-between'>

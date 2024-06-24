@@ -8,7 +8,7 @@ const Intro = ({ isActive }) => {
   const { toggleComponent, skills, setSkills, invocaciones, setInvocaciones, jugador, enemigo, setEnemigo } = useContext(GlobalStateContext);
 
   const [showMessage, setShowMessage] = useState(false);
-  const [bandera1, setBandera] = useState(false);
+
 
   const enemy = new Jugador('enemigo');
 
@@ -58,23 +58,21 @@ const Intro = ({ isActive }) => {
       console.log(jugador);
 
       enemigo.modificarInvocacionElegida(invocaciones[1])
-      enemigo.invocacionElegida.habilidades.push(skills[1])
+      enemigo.invocacionElegida.habilidades.push(skills[0])
       console.log('Se Agregaron las Skills a : ' + enemigo.nombre);
       console.log(enemigo);
 
-      setBandera(true)
+      jugador.invocacionElegida.habilidades[0].setObjetivo(enemigo.invocacionElegida)
+      jugador.invocacionElegida.habilidades[0].setCaster(jugador.invocacionElegida)
+    
+      enemigo.invocacionElegida.habilidades[0].setObjetivo(jugador.invocacionElegida)
+      enemigo.invocacionElegida.habilidades[0].setCaster(enemigo.invocacionElegida)
+      console.log(jugador, enemigo);
+      
     }
   },[skills])
 
-    // cambiamos el caster y el objetivo de ambos y por fin a probar las skills
-  useEffect(() => {
-    jugador.invocacionElegida.habilidades[0].objetivo = enemigo.invocacionElegida
-    jugador.invocacionElegida.habilidades[0].caster = jugador.invocacionElegida
 
-    enemigo.invocacionElegida.habilidades[0].objetivo = jugador.invocacionElegida
-    enemigo.invocacionElegida.habilidades[0].caster = enemigo.invocacionElegida
-    console.log(jugador, enemigo);
-  },[bandera1, setBandera])
 
 
   return (

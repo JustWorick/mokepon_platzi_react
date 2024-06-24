@@ -14,11 +14,19 @@ export class Habilidad{
     }
 
 
-    usarHabilidad(){
-        if(this.caster != this.objetivo){  // significa que es una habilidad ofensiva
-            this.efecto(this.objetivo)
+    setCaster(caster) {
+        this.caster = caster;
+    }
+
+    setObjetivo(objetivo) {
+        this.objetivo = objetivo;
+    }
+
+    usarHabilidad() {
+        if (this.caster && this.objetivo) {
+            this.efecto(this.caster,this.objetivo);
         } else {
-            this.efecto(this.caster)
+            console.error('Caster u objetivo no establecidos');
         }
     }
 }
@@ -64,7 +72,8 @@ function probExito(casterPre, skillPre, evasionObjetivo){
 
 function propCritico(caster){
     let num = getRandomNumber(0,100)
-    if(num < caster.stats.propCritico){
+    if(num > caster.stats.probCritico){
+        console.log('El Ataque Fue Critico');
         return true
     } else {
         console.log('El ataque no es critico');
@@ -74,77 +83,35 @@ function propCritico(caster){
 
 export function crearHabilidades(){
     const hab1 = new Habilidad(0, 'Tajear', 'Cortante', Infinity, 'Corta a sus Enemigos con movimientos que vio en peliculas, tiene posibilidad de golpear 2 veces',
-        () => {
-            let exito = probExito(this.caster.stats.precision, 82, this.objetivo.stats.evasion)
+        function(caster, objetivo) {
+            let exito = probExito(caster.stats.precision, 82, objetivo.stats.evasion)
             let numAtaques = 1;
-            if(getRandomNumber(0,100) < 10) {
+            console.log('================================================================================');
+            if(getRandomNumber(0,100) > 50) {
+                console.log('Ataco De Nuevo')
                 numAtaques++
             }
             for (let index = 0; index < numAtaques; index++) {
                 if(exito === true){
-                    let critico = propCritico(this.caster)
+                    let critico = propCritico(caster)
                     let damage = getRandomNumber(-12,-6)
+                    console.log('damage Antes del Blindage : ' + damage);
                     if(critico === true) {
-                        damage *= this.caster.stats.multiCritico
+                        damage *= caster.stats.multiCritico
+                        console.log('damage fue critico : ' + damage);
                     }
-                    damage -= (damage * this.objetivo.stats.blindaje / 100)  
-                    this.objetivo.stats.saludActual += damage
-                    console.log(damage);
-                    probSangrado(this.objetivo)
+                    damage -= (damage * objetivo.stats.blindaje / 100)  
+                    objetivo.stats.saludActual += damage
+                    console.log('damage despues del blindage : ' + damage);
+                    probSangrado(objetivo)
+                    
+                    console.log('Uso Tajear')  
                 } else {
                     console.log('El ataque Fallo');
                 }
-                console.log('Uso Tajear');
+                console.log('la vida actual del objetivo es : ' + objetivo.stats.saludActual);
             }
         })
-        const hab1copi1 = new Habilidad(1, 'Tajearcopia1', 'Cortante', Infinity, 'Corta a sus Enemigos con movimientos que vio en peliculas, tiene posibilidad de golpear 2 veces',
-            () => {
-                let exito = probExito(this.caster.stats.precision, 82, this.objetivo.stats.evasion)
-                let numAtaques = 1;
-                if(getRandomNumber(0,100) < 10) {
-                    numAtaques++
-                }
-                for (let index = 0; index < numAtaques; index++) {
-                    if(exito === true){
-                        let critico = propCritico(this.caster)
-                        let damage = getRandomNumber(-12,-6)
-                        if(critico === true) {
-                            damage *= this.caster.stats.multiCritico
-                        }
-                        damage -= (damage * this.objetivo.stats.blindaje / 100)  
-                        this.objetivo.stats.saludActual += damage
-                        console.log(damage);
-                        probSangrado(this.objetivo)
-                    } else {
-                        console.log('El ataque Fallo');
-                    }
-                    console.log('Uso Tajear');
-                }
-            })
-            const hab1copia2 = new Habilidad(2, 'Tajearcopia2', 'Cortante', Infinity, 'Corta a sus Enemigos con movimientos que vio en peliculas, tiene posibilidad de golpear 2 veces',
-                () => {
-                    let exito = probExito(this.caster.stats.precision, 82, this.objetivo.stats.evasion)
-                    let numAtaques = 1;
-                    if(getRandomNumber(0,100) < 10) {
-                        numAtaques++
-                    }
-                    for (let index = 0; index < numAtaques; index++) {
-                        if(exito === true){
-                            let critico = propCritico(this.caster)
-                            let damage = getRandomNumber(-12,-6)
-                            if(critico === true) {
-                                damage *= this.caster.stats.multiCritico
-                            }
-                            damage -= (damage * this.objetivo.stats.blindaje / 100)  
-                            this.objetivo.stats.saludActual += damage
-                            console.log(damage);
-                            probSangrado(this.objetivo)
-                        } else {
-                            console.log('El ataque Fallo');
-                        }
-                        console.log('Uso Tajear');
-                    }
-                })
     // const hab2 = new Habilidad(1, 'Cogotear', 'Cortante', Infinity, 'Ataca y tiene la probabilidad de bajar la defenza',
     //     () => {
     //         let exito = probExito(this.caster.stats.precision, 82, this.objetivo.stats.evasion)
@@ -165,6 +132,6 @@ export function crearHabilidades(){
     // const hab11 = new Habilidad(10, 'Confiscar Sustancias', 'Normal', 1)
     // const hab12 = new Habilidad()
     // let habilidadesList = [hab1,hab2,hab3,hab4,hab5,hab6,hab7,hab8,hab9,hab10,hab11]
-    let habilidadesList = [hab1,hab1copi1,hab1copia2]
+    let habilidadesList = [hab1]
     return habilidadesList;
 }
