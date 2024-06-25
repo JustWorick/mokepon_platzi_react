@@ -92,6 +92,17 @@ function probCriticoModificado(caster, aumentoCRIT){
     }
 }
 
+function probStun(){
+    let num = getRandomNumber(0,100)
+    if(num <= 15){
+        console.log('El Enemigo se logro Aturdir');
+        return true
+    } else {
+        console.log('El Aturdimiento Fallo');
+        return false
+    }
+}
+
 export function crearHabilidades(){
     const hab1 = new Habilidad(0, 'Tajear', 'Cortante', Infinity, 'Corta a sus Enemigos con movimientos aprendio en cana, tiene posibilidad de golpear 2 veces',
         function(caster, objetivo) {
@@ -183,9 +194,73 @@ export function crearHabilidades(){
             console.log('la vida actual del Caster es : ' + caster.stats.saludActual); 
         }
     )
-    // const hab6 = new Habilidad(5, 'Apuntar', 'Normal', Infinity)
-    // const hab7 = new Habilidad(6, 'Tiro Preciso', 'Perforante', Infinity)
-    // const hab8 = new Habilidad(7, 'Lumazo Tactico', 'Contundente', Infinity)
+    const hab6 = new Habilidad(5, 'Apuntar', 'Normal', Infinity, 'Apunta el revolver, Asegura "Tiro Preciso"',
+        function(caster, objetivo){
+            console.log('========================================APUNTAR========================================');
+            caster.estados.push('Apuntando')
+            console.log(`se añadio el estado de apuntado: ` + caster.estados); 
+        }
+    )
+    const hab7 = new Habilidad(6, 'Tiro Preciso', 'Perforante', Infinity, 'Dispara asegurando un golpe Critico',
+        function(caster, objetivo){
+            let exito = probExito(caster.stats.precision, 150, objetivo.stats.evasion)
+            console.log('========================================TIRO PRECISO========================================');
+    
+            if(exito === true){
+                let critico = probCriticoModificado(caster, 100)
+                let damage = getRandomNumber(-15,-8)
+
+                if(critico === true){
+                    damage *= caster.stats.multiCritico
+                    console.log(`El ataque fue critico, el daño fue: ${damage}`);
+                }
+                
+                console.log(`Blindaje del objetivo es: ${objetivo.stats.blindaje}`);
+                console.log('damage Antes del Blindage : ' + damage);
+                damage -= (damage * ((objetivo.stats.blindaje / 100) /2))  // Cuando es perforante el blindaje se divide por 2
+                objetivo.modificarSalud(damage)
+                console.log('damage despues del blindage : ' + damage); 
+                
+            } else{
+                console.log('Tiro Preciso Fallo... de alguna manera ._.');
+            }
+            
+            console.log('la vida actual del objetivo es : ' + objetivo.stats.saludActual); 
+
+        }
+    )
+    const hab8 = new Habilidad(7, 'Lumazo Tactico', 'Contundente', Infinity, 'Golpeas a tu enemigo con un palo, Tiene chance',
+        function(caster, objetivo){
+            let exito = probExito(caster.stats.precision, 70, objetivo.stats.evasion)
+            console.log('========================================Lumazo Tactico========================================');
+            
+            if(exito === true){
+                let critico = probCriticoModificado(caster, 30)
+                let damage = getRandomNumber(-12,-6)
+                let stun = probStun()
+
+                if(stun === true){
+                    objetivo.estados.push('+Aturdido')
+                }
+
+                if(critico === true){
+                    damage *= caster.stats.multiCritico
+                    console.log(`El ataque fue critico, el daño fue: ${damage}`);
+                }
+                
+                console.log(`Blindaje del objetivo es: ${objetivo.stats.blindaje}`);
+                console.log('damage Antes del Blindage : ' + damage);
+                damage -= (damage * (objetivo.stats.blindaje / 100))  
+                objetivo.modificarSalud(damage)
+                console.log('damage despues del blindage : ' + damage); 
+                
+            } else{
+                console.log('Lumazo Tactico Fallo');
+            }
+            
+            console.log('la vida actual del objetivo es : ' + objetivo.stats.saludActual); 
+        }
+    )
     // const hab9 = new Habilidad(8, 'Jale Medicinal', 'Merca', 3)
     // const hab10 = new Habilidad(9, 'Revisar Antecedentes', 'Normal', 1)
     // const hab11 = new Habilidad(10, 'Confiscar Sustancias', 'Normal', 1)
