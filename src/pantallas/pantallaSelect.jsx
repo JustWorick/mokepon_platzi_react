@@ -4,10 +4,14 @@ import { findInvocacionById } from '../components/invocacion.js';
 
 const PantallaSelect = ({ isActive }) => {
   const { toggleComponent, invocaciones, jugador, enemigo  } = useContext(GlobalStateContext);
-  const [sectionSuperior, setSectionSuperior] = useState(null)
+  const [idSectionSuperior, setIdSectionSuperior] = useState(null)
 
 
-  let invoDivSuperior = findInvocacionById(sectionSuperior, invocaciones)
+  let invoDivSuperior = findInvocacionById(idSectionSuperior, invocaciones)
+
+  const elegirInvocacion = (id) => {
+    setIdSectionSuperior(id)
+  }
 
   const probarHabilidadJugador = () => {
     if (jugador && jugador.invocacionElegida && jugador.invocacionElegida.habilidades.length > 0) {
@@ -25,23 +29,53 @@ const PantallaSelect = ({ isActive }) => {
     <div className={`${isActive ? 'active' : 'inactive'} h-100`}>
       <div className='d-flex flex-column justify-content-center align-items-center h-100 w-100'>
         <section className='h-75 w-100'>
-          { sectionSuperior == null && (
+          { idSectionSuperior == null && (
             <>
               <p>Elige un pj</p>
               <button className='btn btn-primary' onClick={probarHabilidadJugador}>Probar Habilidad Jugador</button>
               <button className='btn btn-danger' onClick={probarHabilidadEnemigo}>Probar Habilidad Enemigo</button>
             </>
           ) }
-          { sectionSuperior != null && (
+          { idSectionSuperior != null && (
             <div className='d-flex justify-content-between'>
               <div className='w-50'>
                 <img src={invoDivSuperior.images.imgGrande} className='img-fluid' style={{width: 400, height: 400 }}/>
               </div>
               <div className='w-50'>
                 <span>{invoDivSuperior.nombre}</span>
-                  <div>
-                    
-                  </div>
+                <div className='flex flex-column border border-primary-subtle'>
+                    <span>Stats</span> 
+                      {(
+                        <ul>
+                          <li>Salud: {invoDivSuperior.stats.saludMaxima}</li>
+                          <li>Blindaje: {invoDivSuperior.stats.blindaje}</li>
+                          <li>Evasion: {invoDivSuperior.stats.evasion}</li>
+                        </ul>
+                      )}
+                </div>
+                <div>
+                      <span>Habilidades</span>
+                      {(
+                        <>
+                          <div className='row'>
+                            <div className='col'> 
+                              <span>{}</span>
+                            </div>
+                            <div className='col'> 
+
+                            </div>
+                          </div>
+                          <div className='row'>
+                            <div className='col'> 
+
+                            </div>
+                            <div className='col'> 
+
+                            </div>
+                          </div>
+                        </>
+                      )}
+                </div>
               </div>
             </div>
           ) }

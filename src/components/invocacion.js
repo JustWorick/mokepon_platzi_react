@@ -9,6 +9,16 @@ export class Invocacion {
       this.habilidades = [];
       this.estados = [];
     }
+
+    modificarSalud(cantidad){
+        if(this.stats.saludActual + cantidad > this.stats.saludMaxima){
+            this.stats.saludActual = this.stats.saludMaxima
+        }else if(this.stats.saludActual + cantidad < 0){
+            this.stats.saludActual = 0
+        }else {
+            this.stats.saludActual += cantidad
+        }
+    }
 }
 
 const brayanImages = {
@@ -23,16 +33,14 @@ const caboRamirezImages = {
 }
 
 const statsInvoIniciales = [
-    {id:0, invocacion: 'Brayan', saludMaxima: 90, saludActual: 90, precision: 95, velocidad: 10, blindaje : 9, evasion: 16, probCritico: 12, multiCritico: 1.5},
-    {id:1, invocacion: 'Ramirez', saludMaxima: 110, saludActual: 90, precision: 95, velocidad: 10, blindaje : 18, evasion: 8, probCritico: 6, multiCritico: 1.5}
+    {id:0, invocacion: 'Brayan', saludMaxima: 90, saludActual: 90, precision: 95, velocidad: 10, blindaje : 19, evasion: 16, probCritico: 12, multiCritico: 1.5},
+    {id:1, invocacion: 'Ramirez', saludMaxima: 110, saludActual: 90, precision: 95, velocidad: 10, blindaje : 38, evasion: 8, probCritico: 6, multiCritico: 1.5}
 ]
 
 export function crearInvocaciones(){
     let brayan = new Invocacion(0, 'Brayan Anuel', brayanImages, statsInvoIniciales[0])
-    let bairon = new Invocacion(1, 'Bairon', brayanImages, statsInvoIniciales[0])
-    let kevin = new Invocacion(2, 'Kevin', brayanImages, statsInvoIniciales[0])
-    let paco = new Invocacion(3, 'Cabo Ramirez', caboRamirezImages, statsInvoIniciales[1])
-    let invoList = [brayan, bairon, kevin, paco]
+    let paco = new Invocacion(1, 'Cabo Ramirez', caboRamirezImages, statsInvoIniciales[1])
+    let invoList = [brayan, paco]
     return invoList
 }
 

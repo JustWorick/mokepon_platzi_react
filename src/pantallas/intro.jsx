@@ -53,12 +53,12 @@ const Intro = ({ isActive }) => {
   useEffect(() => {
     if(jugador && skills && enemigo) {
       jugador.modificarInvocacionElegida(invocaciones[0])
-      jugador.invocacionElegida.habilidades.push(skills[0])
+      jugador.invocacionElegida.habilidades.push(skills[3])
       console.log('Se Agregaron las Skills a : ' + jugador.nombre);
       console.log(jugador);
 
       enemigo.modificarInvocacionElegida(invocaciones[1])
-      enemigo.invocacionElegida.habilidades.push(skills[0])
+      enemigo.invocacionElegida.habilidades.push(skills[2])
       console.log('Se Agregaron las Skills a : ' + enemigo.nombre);
       console.log(enemigo);
 

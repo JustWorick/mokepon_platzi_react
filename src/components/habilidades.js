@@ -70,9 +70,9 @@ function probExito(casterPre, skillPre, evasionObjetivo){
     }
 }
 
-function propCritico(caster){
+function probCritico(caster){
     let num = getRandomNumber(0,100)
-    if(num > caster.stats.probCritico){
+    if(num < caster.stats.probCritico){ 
         console.log('El Ataque Fue Critico');
         return true
     } else {
@@ -81,19 +81,30 @@ function propCritico(caster){
     }
 }
 
+function probCriticoModificado(caster, aumentoCRIT){
+    let num = getRandomNumber(0,100)
+    if(num < (caster.stats.probCritico + aumentoCRIT)){
+        console.log(`El Ataque Fue Critico, la probabilidad a superar es de: ${num} y la del caster es de: ${(caster.stats.probCritico + aumentoCRIT)} y antes era: ${caster.stats.probCritico}`);
+        return true
+    } else {
+        console.log('El ataque no es critico');
+        return false
+    }
+}
+
 export function crearHabilidades(){
-    const hab1 = new Habilidad(0, 'Tajear', 'Cortante', Infinity, 'Corta a sus Enemigos con movimientos que vio en peliculas, tiene posibilidad de golpear 2 veces',
+    const hab1 = new Habilidad(0, 'Tajear', 'Cortante', Infinity, 'Corta a sus Enemigos con movimientos aprendio en cana, tiene posibilidad de golpear 2 veces',
         function(caster, objetivo) {
             let exito = probExito(caster.stats.precision, 82, objetivo.stats.evasion)
             let numAtaques = 1;
-            console.log('================================================================================');
+            console.log('========================================TAJEAR========================================');
             if(getRandomNumber(0,100) > 50) {
                 console.log('Ataco De Nuevo')
                 numAtaques++
             }
             for (let index = 0; index < numAtaques; index++) {
                 if(exito === true){
-                    let critico = propCritico(caster)
+                    let critico = probCritico(caster)
                     let damage = getRandomNumber(-12,-6)
                     console.log('damage Antes del Blindage : ' + damage);
                     if(critico === true) {
@@ -101,7 +112,7 @@ export function crearHabilidades(){
                         console.log('damage fue critico : ' + damage);
                     }
                     damage -= (damage * objetivo.stats.blindaje / 100)  
-                    objetivo.stats.saludActual += damage
+                    objetivo.modificarSalud(damage)
                     console.log('damage despues del blindage : ' + damage);
                     probSangrado(objetivo)
                     
@@ -116,14 +127,62 @@ export function crearHabilidades(){
     //     () => {
     //         let exito = probExito(this.caster.stats.precision, 82, this.objetivo.stats.evasion)
     //         if(exito === true){
-    //             let critico = propCritico(this.caster)
+    //             let critico = probCritico(this.caster)
 
     //         }
     //     }
     // )
-    // const hab3 = new Habilidad(2, 'Intimidar', 'Normal', 3)
-    // const hab4 = new Habilidad(3, 'Puñala Maletera', 'Perforante', Infinity)
-    // const hab5 = new Habilidad(4, 'Pastita llica', 'Pasta', 3)
+    const hab3 = new Habilidad(2, 'Intimidar', 'Normal', 2, 'Intenta intimidar a su oponente y baja su blindaje por 2 turnos',
+        function(caster, objetivo){
+            let exito = probExito(caster.stats.precision, 70, objetivo.stats.evasion)
+            console.log('========================================INTIMIDAR========================================');
+
+            if(exito === true){
+                objetivo.estados.push('-defensa')
+                console.log('El objetivo pierde Blindaje por 2 turnos, el blindaje actual del objetivo es: ' + objetivo.stats.blindaje);
+            } else {
+                console.log('Intimidar Fallo');
+            }
+        }
+    )
+    const hab4 = new Habilidad(3, 'Puñala Maletera', 'Perforante', Infinity, 'Intenta apuñalar a su enemigo cuando le pide la hora, tiene baja PRE pero mas P.CRIT',
+        function(caster, objetivo){
+            let exito = probExito(caster.stats.precision, 70, objetivo.stats.evasion)
+            console.log('========================================PUÑALADA MALETERA========================================');
+
+            if(exito === true){
+                let critico = probCriticoModificado(caster, 30)
+                let damage = getRandomNumber(-18,-10)
+
+                if(critico === true){
+                    damage *= caster.stats.multiCritico
+                    console.log(`El ataque fue critico, el daño fue: ${damage}`);
+                }
+                
+                console.log(`Blindaje del objetivo es: ${objetivo.stats.blindaje}`);
+                console.log('damage Antes del Blindage : ' + damage);
+                damage -= (damage * ((objetivo.stats.blindaje / 100) /2))  
+                objetivo.modificarSalud(damage)
+                console.log('damage despues del blindage : ' + damage); 
+                
+            } else{
+                console.log('Puñalada Maletera Fallo');
+            }
+            
+            console.log('la vida actual del objetivo es : ' + objetivo.stats.saludActual);  
+        }
+    )
+    const hab5 = new Habilidad(4, 'Pastita llica', 'Pasta', 1, 'Se pega un Pipaso con lo que le compro a su amigo el Tadeo, aumenta BLIN, CRIT por 2 turnos y se cura una cantidad Aleatoria de Salud',
+        function(caster, objetivo){
+            let numCuracion = getRandomNumber(10,30)
+            console.log('========================================PASTITA LLICA========================================');
+
+            caster.modificarSalud(numCuracion)
+            caster.estados.push('+Blindaje','+ProbCritico')
+            console.log(`Los estados del Caster Son:`+ caster.estados);
+            console.log('la vida actual del Caster es : ' + caster.stats.saludActual); 
+        }
+    )
     // const hab6 = new Habilidad(5, 'Apuntar', 'Normal', Infinity)
     // const hab7 = new Habilidad(6, 'Tiro Preciso', 'Perforante', Infinity)
     // const hab8 = new Habilidad(7, 'Lumazo Tactico', 'Contundente', Infinity)
@@ -132,6 +191,6 @@ export function crearHabilidades(){
     // const hab11 = new Habilidad(10, 'Confiscar Sustancias', 'Normal', 1)
     // const hab12 = new Habilidad()
     // let habilidadesList = [hab1,hab2,hab3,hab4,hab5,hab6,hab7,hab8,hab9,hab10,hab11]
-    let habilidadesList = [hab1]
+    let habilidadesList = [hab1,hab3,hab4,hab5]
     return habilidadesList;
 }
