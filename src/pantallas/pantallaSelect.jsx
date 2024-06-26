@@ -3,27 +3,36 @@ import { GlobalStateContext } from '../components/globalState.jsx';
 import { findInvocacionById } from '../components/invocacion.js';
 
 const PantallaSelect = ({ isActive }) => {
-  const { toggleComponent, invocaciones, jugador, enemigo  } = useContext(GlobalStateContext);
+  const { toggleComponent, invocaciones, jugador, enemigo, skills  } = useContext(GlobalStateContext);
   const [idSectionSuperior, setIdSectionSuperior] = useState(null)
-
-
+  const [ bandera2, setBandera2 ] = useState(false)
   let invoDivSuperior = findInvocacionById(idSectionSuperior, invocaciones)
 
-  const elegirInvocacion = (id) => {
+  const elegirInvocacionForDiv = (id) => {   // <<<======================= LE MANDA INFORMACION AL SECTION SUPERIOR PARA RENDERIZAR
     setIdSectionSuperior(id)
   }
 
-  const probarHabilidadJugador = () => {
-    if (jugador && jugador.invocacionElegida && jugador.invocacionElegida.habilidades.length > 0) {
-      jugador.invocacionElegida.habilidades[0].usarHabilidad()
-    }
-  };
+  const agregarInvocacionJugador = (id) => {   // <<<===================== FUNCION PARA AGREGAR INVOCACION AL JUGADOR
+    let invo = findInvocacionById(id, invocaciones)
+    jugador.addInvocaciones(invo)
+    jugador.modificarInvocacionElegida(invo)
+    toggleComponent('PantallaCombate')
+    console.log(jugador);
+    setBandera2(true)
+  }
 
-  const probarHabilidadEnemigo = () => {
-    if (enemigo && enemigo.invocacionElegida && enemigo.invocacionElegida.habilidades.length > 0) {
-      enemigo.invocacionElegida.habilidades[0].usarHabilidad()
+  useEffect(() => {  // <<<<<======================================== AÑADE EL CASTER Y OBJETIVO A JUGADOR Y ENEMIGO
+    if(jugador && invocaciones && enemigo && skills && jugador.invocacionElegida != null){
+      if(jugador.invocacionElegida.habilidades[0].caster === null && enemigo.invocacionElegida.habilidades[0].caster === null){
+          jugador.invocacionElegida.habilidades.map(skill => {
+          skill.modificarCasterAndObjetivo(jugador.invocacionElegida, enemigo.invocacionElegida)
+        })
+        
+        console.log('=========================AQUI SE CUMPLE LA FUNCION============================');
+      }
+      console.log('=========================AQUI SE CUMPLE EL PRIMER IF============================');
     }
-  };
+  },[jugador, bandera2])
 
   return (
     <div className={`${isActive ? 'active' : 'inactive'} h-100`}>
@@ -31,9 +40,7 @@ const PantallaSelect = ({ isActive }) => {
         <section className='h-75 w-100'>
           { idSectionSuperior == null && (
             <>
-              <p>Elige un pj</p>
-              <button className='btn btn-primary' onClick={probarHabilidadJugador}>Probar Habilidad Jugador</button>
-              <button className='btn btn-danger' onClick={probarHabilidadEnemigo}>Probar Habilidad Enemigo</button>
+              <p>Elige una Invocacion</p>
             </>
           ) }
           { idSectionSuperior != null && (
@@ -41,8 +48,13 @@ const PantallaSelect = ({ isActive }) => {
               <div className='w-50'>
                 <img src={invoDivSuperior.images.imgGrande} className='img-fluid' style={{width: 400, height: 400 }}/>
               </div>
+
               <div className='w-50'>
-                <span>{invoDivSuperior.nombre}</span>
+                <div className='flex justify-content-between'>
+                  <span>{invoDivSuperior.nombre}</span>
+                  <button onClick={() => agregarInvocacionJugador(invoDivSuperior.id)}>Elegir Invocacion</button>
+                </div>
+
                 <div className='flex flex-column border border-primary-subtle'>
                     <span>Stats</span> 
                       {(
@@ -53,6 +65,7 @@ const PantallaSelect = ({ isActive }) => {
                         </ul>
                       )}
                 </div>
+
                 <div>
                   <span>Habilidades</span>
                   {invoDivSuperior.habilidades.length > 0 && (
@@ -73,7 +86,7 @@ const PantallaSelect = ({ isActive }) => {
         </section>
         <section className='d-flex justify-content-evenly h-25 w-100'>
           { invocaciones.map((invocacion)  => (
-            <div className='d-flex flex-column align-items-center' key={invocacion.id} onClick={() => elegirInvocacion(invocacion.id)}>
+            <div className='d-flex flex-column align-items-center' key={invocacion.id} onClick={() => elegirInvocacionForDiv(invocacion.id)}>
               <img src={invocacion.images.imgChica} className='img-fluid' style={{width: 200, height: 200 }}/>
             </div>
           )) }

@@ -8,6 +8,7 @@ const PantallaCombate = ({ isActive }) => {
   const [ turno, setTurno ] = useState(null);
   const [ jugadorEnCombate, setJugadorEnCombate ] = useState(null)
 
+
   const cambiarDivTo = (divDestino) => {
     setActiveDiv(divDestino)
   }
@@ -19,7 +20,7 @@ const PantallaCombate = ({ isActive }) => {
   return (
     <div className={`${isActive ? 'active' : 'inactive'}`}>
       {/* <<<<<<<==================================================FALTA AGREGAR EL REDIRECCIONAMIENTO A PANTALLA COMBATE */}
-      {jugadorEnCombate != null && (
+      {jugadorEnCombate != null && jugadorEnCombate.invocacionElegida && (
         <div className='d-flex flex-column h-100 w-100'>
           <section>
             {/* escenario */}
@@ -40,7 +41,7 @@ const PantallaCombate = ({ isActive }) => {
               <div className={`${activeDiv === 'divHabilidades'? 'active' : 'inactive'}`}>
                 <div className='d-flex justify-content-evenly align-items-center'>
                   {jugadorEnCombate.invocacionElegida.habilidades.map((skill) => (
-                    <button key={skill.id} onClick={() => skill.usarHabilidad()}>{skill.nombre}</button>
+                    <button key={skill.id} onClick={() => {skill.usarHabilidad()}}>{skill.nombre}</button>
                   ))}
                 </div>
               </div>

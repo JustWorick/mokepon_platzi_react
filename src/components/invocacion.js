@@ -19,6 +19,7 @@ export class Invocacion {
             this.stats.saludActual += cantidad
         }
     }
+    
 }
 
 const brayanImages = {

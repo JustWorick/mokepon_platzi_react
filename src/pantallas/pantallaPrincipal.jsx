@@ -1,11 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { GlobalStateContext } from '../components/globalState.jsx';
-import { Jugador } from '../components/jugador.js';
+
 
 const PantallaPrincipal = ({ isActive }) => {
   const { toggleComponent, jugador, setJugador} = useContext(GlobalStateContext);
-
-  
   const [inputValue, setInputValue] = useState('Juanito');
   
   const handleChange = (event) => {
@@ -14,13 +12,10 @@ const PantallaPrincipal = ({ isActive }) => {
   
   const handleSubmit = (event) => {
     event.preventDefault(); 
-    let player = jugador.modificarNombre(inputValue)
-    setJugador(player); 
+    jugador.modificarNombre(inputValue)
     toggleComponent('PantallaSelect');
-    console.log(jugador);
   };
   
-
   return (
     <div className={`position-relative ${isActive ? 'd-block' : 'd-none'} w-100 h-100`}>
       <img src={'/assets/fondos/invokers.png'} className='position-absolute top-0 start-0 w-100 h-100 z-0' alt="Fondo" />

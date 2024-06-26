@@ -14,11 +14,8 @@ export class Habilidad{
     }
 
 
-    setCaster(caster) {
+    modificarCasterAndObjetivo(caster, objetivo) {
         this.caster = caster;
-    }
-
-    setObjetivo(objetivo) {
         this.objetivo = objetivo;
     }
 
