@@ -9,6 +9,10 @@ export class Jugador {
         this.dinero = null;
     }
 
+    modificarNombre(newNombre){
+        this.nombre = newNombre
+    }
+
     addInvocaciones(invocacion){
         this.invocacionesJugador.push(invocacion)
     }

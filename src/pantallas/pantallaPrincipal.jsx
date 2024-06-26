@@ -14,7 +14,7 @@ const PantallaPrincipal = ({ isActive }) => {
   
   const handleSubmit = (event) => {
     event.preventDefault(); 
-    const player = new Jugador(inputValue);
+    let player = jugador.modificarNombre(inputValue)
     setJugador(player); 
     toggleComponent('PantallaSelect');
     console.log(jugador);

@@ -32,15 +32,7 @@ export class Habilidad{
 }
 
 export function agregarHabilidades(globalHabilidades, habilidadesToLearn, invocacion){
-    //let skillsArray = []
-    const skillsArray = habilidadesToLearn.map(id => globalHabilidades.get(id))
-    // globalHabilidades.map((skill) => {
-    //     habilidadesToLearn.forEach((id) => {
-    //         if(skill.id === id){
-    //             skillsArray.push(skill)
-    //         } 
-    //     } )
-    // })
+    const skillsArray = habilidadesToLearn.map(id => globalHabilidades[id]);
     invocacion.habilidades = skillsArray
 }
 
@@ -240,7 +232,7 @@ export function crearHabilidades(){
                 let stun = probStun()
 
                 if(stun === true){
-                    objetivo.estados.push('+Aturdido')
+                    objetivo.estados.push('Aturdido')
                 }
 
                 if(critico === true){
@@ -261,11 +253,47 @@ export function crearHabilidades(){
             console.log('la vida actual del objetivo es : ' + objetivo.stats.saludActual); 
         }
     )
-    // const hab9 = new Habilidad(8, 'Jale Medicinal', 'Merca', 3)
+    const hab9 = new Habilidad(8, 'Jale Medicinal', 'Merca', 2, 'Te "untas" una raya de "Mentholatum", aumenta EVA, VEL y M.CRIT',
+        function(caster,objetivo){
+            console.log('========================================Lumazo Tactico========================================');
+            caster.estados.push('Durisimo')
+            console.log('Los estados del personaje son: ' + caster.estados);
+        }
+    )
+    const hab10 = new Habilidad(9, 'Disparo Rapido', 'Perforante', Infinity, 'Dispara sin apuntar, puede golpear varias veces, pero tiene baja PRE',
+        function(caster, objetivo){
+            let exito = probExito(caster.stats.precision, 82, objetivo.stats.evasion)
+            let numAtaques = 1;
+            console.log('=====================================DISPARO RAPIDO========================================');
+            if(getRandomNumber(0,100) > 50) {
+                console.log('Ataco De Nuevo')
+                numAtaques++
+            }
+            for (let index = 0; index < numAtaques; index++) {
+                if(exito === true){
+                    let critico = probCritico(caster)
+                    let damage = getRandomNumber(-10,-6)
+                    console.log('damage Antes del Blindage : ' + damage);
+                    if(critico === true) {
+                        damage *= caster.stats.multiCritico
+                        console.log('damage fue critico : ' + damage);
+                    }
+                    damage -= (damage * ((objetivo.stats.blindaje / 100)/2))  
+                    objetivo.modificarSalud(damage)
+                    console.log('damage despues del blindage : ' + damage);
+                    
+                    
+                    console.log('Uso Disparo Rapido')  
+                } else {
+                    console.log('El ataque Fallo');
+                }
+                console.log('la vida actual del objetivo es : ' + objetivo.stats.saludActual);
+            }
+        }
+    )
     // const hab10 = new Habilidad(9, 'Revisar Antecedentes', 'Normal', 1)
     // const hab11 = new Habilidad(10, 'Confiscar Sustancias', 'Normal', 1)
-    // const hab12 = new Habilidad()
     // let habilidadesList = [hab1,hab2,hab3,hab4,hab5,hab6,hab7,hab8,hab9,hab10,hab11]
-    let habilidadesList = [hab1,hab3,hab4,hab5]
+    let habilidadesList = [hab1,hab3,hab4,hab5,hab6,hab7,hab8,hab9,hab10]
     return habilidadesList;
 }

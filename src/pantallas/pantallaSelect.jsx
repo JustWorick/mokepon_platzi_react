@@ -54,27 +54,18 @@ const PantallaSelect = ({ isActive }) => {
                       )}
                 </div>
                 <div>
-                      <span>Habilidades</span>
-                      {(
-                        <>
-                          <div className='row'>
-                            <div className='col'> 
-                              <span>{}</span>
-                            </div>
-                            <div className='col'> 
-
-                            </div>
+                  <span>Habilidades</span>
+                  {invoDivSuperior.habilidades.length > 0 && (
+                    <div>
+                      {invoDivSuperior.habilidades.map((habilidad, index) => (
+                        <div key={index} className='row'>
+                          <div className='col'>
+                            <span>{habilidad.nombre}</span>
                           </div>
-                          <div className='row'>
-                            <div className='col'> 
-
-                            </div>
-                            <div className='col'> 
-
-                            </div>
-                          </div>
-                        </>
-                      )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -84,8 +75,6 @@ const PantallaSelect = ({ isActive }) => {
           { invocaciones.map((invocacion)  => (
             <div className='d-flex flex-column align-items-center' key={invocacion.id} onClick={() => elegirInvocacion(invocacion.id)}>
               <img src={invocacion.images.imgChica} className='img-fluid' style={{width: 200, height: 200 }}/>
-              <span>{invocacion.nombre}</span>
-              <button >Elegir</button>
             </div>
           )) }
         </section>

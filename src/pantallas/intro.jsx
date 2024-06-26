@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { GlobalStateContext } from '../components/globalState.jsx';
 import { crearInvocaciones } from '../components/invocacion.js';
-import { crearHabilidades } from '../components/habilidades.js';
+import { agregarHabilidades, crearHabilidades } from '../components/habilidades.js';
 import { Jugador } from '../components/jugador.js';
 
 const Intro = ({ isActive }) => {
@@ -52,13 +52,15 @@ const Intro = ({ isActive }) => {
    // le añademos la invocacion al jugador y enemigo y la skill a ambas invocaciones 
   useEffect(() => {
     if(jugador && skills && enemigo) {
-      jugador.modificarInvocacionElegida(invocaciones[0])
-      jugador.invocacionElegida.habilidades.push(skills[3])
+      jugador.modificarInvocacionElegida(invocaciones[0]) // aqui se modifica la invocacion
+      agregarHabilidades(skills,[0,1,2,3],jugador.invocacionElegida)
+      //jugador.invocacionElegida.habilidades.push(skills[0,1,2,3])  // aqui se agregan las skills
       console.log('Se Agregaron las Skills a : ' + jugador.nombre);
       console.log(jugador);
 
-      enemigo.modificarInvocacionElegida(invocaciones[1])
-      enemigo.invocacionElegida.habilidades.push(skills[2])
+      enemigo.modificarInvocacionElegida(invocaciones[1]) // aqui se modifica la invocacion
+      agregarHabilidades(skills,[4,5,6,7,8],enemigo.invocacionElegida)
+      //enemigo.invocacionElegida.habilidades.push(skills[4,5,6,7,8])  // aqui se agregan las skills
       console.log('Se Agregaron las Skills a : ' + enemigo.nombre);
       console.log(enemigo);
 
