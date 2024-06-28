@@ -27,10 +27,7 @@ const PantallaSelect = ({ isActive }) => {
           jugador.invocacionElegida.habilidades.map(skill => {
           skill.modificarCasterAndObjetivo(jugador.invocacionElegida, enemigo.invocacionElegida)
         })
-        
-        console.log('=========================AQUI SE CUMPLE LA FUNCION============================');
       }
-      console.log('=========================AQUI SE CUMPLE EL PRIMER IF============================');
     }
   },[jugador, bandera2])
 

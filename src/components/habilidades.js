@@ -129,8 +129,6 @@ export function crearHabilidades(){
                 console.log('la vida actual del objetivo es : ' + objetivo.stats.saludActual);
             }
 
-            let info = getHistorial(caster,objetivo,exito,critico,objetivo.estados)
-            return [info]dsfsdf
         })
     // const hab2 = new Habilidad(1, 'Cogotear', 'Cortante', Infinity, 'Ataca y tiene la probabilidad de bajar la defenza',
     //     () => {
