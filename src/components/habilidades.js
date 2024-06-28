@@ -92,20 +92,26 @@ function probStun(){
     }
 }
 
+function getHistorial(caster, objetivo = '', exito = '', critico = '', estados = '') {
+    return { caster, objetivo, exito, critico, estados };
+}
+
+
 export function crearHabilidades(){
     const hab1 = new Habilidad(0, 'Tajear', 'Cortante', Infinity, 'Corta a sus Enemigos con movimientos aprendio en cana, tiene posibilidad de golpear 2 veces',
         function(caster, objetivo) {
+            console.log('========================================TAJEAR========================================');
             let exito = probExito(caster.stats.precision, 82, objetivo.stats.evasion)
             let numAtaques = 1;
-            console.log('========================================TAJEAR========================================');
-            if(getRandomNumber(0,100) > 50) {
+            let critico = probCritico(caster)
+            let damage = getRandomNumber(-12,-6)
+            
+            if(getRandomNumber(0,100) < 15) {
                 console.log('Ataco De Nuevo')
                 numAtaques++
             }
             for (let index = 0; index < numAtaques; index++) {
                 if(exito === true){
-                    let critico = probCritico(caster)
-                    let damage = getRandomNumber(-12,-6)
                     console.log('damage Antes del Blindage : ' + damage);
                     if(critico === true) {
                         damage *= caster.stats.multiCritico
@@ -122,6 +128,9 @@ export function crearHabilidades(){
                 }
                 console.log('la vida actual del objetivo es : ' + objetivo.stats.saludActual);
             }
+
+            let info = getHistorial(caster,objetivo,exito,critico,objetivo.estados)
+            return [info]dsfsdf
         })
     // const hab2 = new Habilidad(1, 'Cogotear', 'Cortante', Infinity, 'Ataca y tiene la probabilidad de bajar la defenza',
     //     () => {

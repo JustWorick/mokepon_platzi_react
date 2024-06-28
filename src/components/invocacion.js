@@ -34,7 +34,7 @@ const caboRamirezImages = {
 }
 
 const statsInvoIniciales = [
-    {id:0, invocacion: 'Brayan', saludMaxima: 90, saludActual: 90, precision: 95, velocidad: 10, blindaje : 19, evasion: 16, probCritico: 12, multiCritico: 1.5},
+    {id:0, invocacion: 'Brayan', saludMaxima: 90, saludActual: 90, precision: 95, velocidad: 11, blindaje : 19, evasion: 16, probCritico: 12, multiCritico: 1.5},
     {id:1, invocacion: 'Ramirez', saludMaxima: 110, saludActual: 90, precision: 95, velocidad: 10, blindaje : 38, evasion: 8, probCritico: 6, multiCritico: 1.5}
 ]
 
