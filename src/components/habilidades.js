@@ -11,12 +11,7 @@ export class Habilidad{
         this.efecto = efecto.bind(this);
         this.caster = null;
         this.objetivo = null;
-    }
-
-
-    modificarCasterAndObjetivo(caster, objetivo) {
-        this.caster = caster;
-        this.objetivo = objetivo;
+        this.mensajeHistorial = '';
     }
 
     usarHabilidad() {
@@ -26,6 +21,20 @@ export class Habilidad{
             console.error('Caster u objetivo no establecidos');
         }
     }
+
+    modificarCasterAndObjetivo(caster, objetivo) {
+        this.caster = caster;
+        this.objetivo = objetivo;
+    }
+
+    modificarMensajeHistorial(mensaje){
+        this.mensajeHistorial = mensaje;
+    }
+
+    modificarIdRandom(){
+        this.id = getRandomNumber(1,100)
+    }
+
 }
 
 export function agregarHabilidades(globalHabilidades, habilidadesToLearn, invocacion){

@@ -26,7 +26,9 @@ const PantallaCombate = ({ isActive }) => {
   function startCombate(){
     const newEstados = crearEstados() // <<<========== SE CREAN LOS ESTADOS
     setEstados(newEstados)
-    gestorDeTurnos()
+
+    setRonda(1)
+    console.log('<<<==================================================== fUNC START COMBATE');
   }
   
   function gestorDeTurnos(){
@@ -38,7 +40,9 @@ const PantallaCombate = ({ isActive }) => {
         setMiTurno(false)
         console.log('Es Turno del Enemigo');
       }
+      console.log('Jugador en combate y Enemigo en combate se estan leyendo');
     }
+    console.log('<<<====================================================Gestor de turnos de esta Leyendo');
   }
 
   function ataqueEnemigo(){
@@ -64,6 +68,8 @@ const PantallaCombate = ({ isActive }) => {
       startCombate()
     }
 
+    gestorDeTurnos()  
+
     if(miTurno === false){  // <<<=============================== LANZA EL ATAQUE ENEMIGO
       ataqueEnemigo()
     }
@@ -75,7 +81,12 @@ const PantallaCombate = ({ isActive }) => {
       setContadorTurno(1)
       console.log('Es la ronda N°: ' + ronda);
     }
-  },[miTurno, contadorTurno, ronda, toggleComponent])
+
+    console.log(`La ronda Actual es: ${ronda}, el contador de ronda es: ${contadorTurno} y el miTurno es: ${miTurno}`);
+    console.log(`El Jugador en combate es: ${jugadorEnCombate} y el Enemigo en combate es: ${enemigoEnCombate}`);
+    console.log(jugadorEnCombate);
+    console.log(enemigoEnCombate);
+  },[miTurno, contadorTurno, ronda, jugadorEnCombate, activeDiv])
   
 
   useEffect(()=>{
