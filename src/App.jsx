@@ -46,7 +46,7 @@ function App() {
 
 
   useEffect(() => { // <<<=============== LE AÑADE UNA INVOCACION AL ENEMIGO EN CASO DE QUE NO TENGA
-    if(enemigo && invocaciones.length > 0 && enemigo.invocacionElegida === null){
+    if(enemigo && invocaciones.length > 0 && enemigo.invocacionElegida === null){      ============================
       let num = Math.floor(getRandomNumber(1,2))
       if(num === 1){
         enemigo.modificarInvocacionElegida(invocaciones[0])
@@ -55,18 +55,6 @@ function App() {
       }
     }
   },[invocaciones])
-
-  
-  // jugador.invocacionElegida.habilidades[0].setObjetivo(enemigo.invocacionElegida)
-  // jugador.invocacionElegida.habilidades[0].setCaster(jugador.invocacionElegida)
-
-  // enemigo.invocacionElegida.habilidades[0].setObjetivo(jugador.invocacionElegida)
-  // enemigo.invocacionElegida.habilidades[0].setCaster(enemigo.invocacionElegida)
-
-  
-  useEffect(() => {
-    console.log(jugador, enemigo, invocaciones, skills)
-  },[skills])
 
   return (
     <div className='contenedor d-flex justify-content-center align-items-center'>

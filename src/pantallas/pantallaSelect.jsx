@@ -14,7 +14,7 @@ const PantallaSelect = ({ isActive }) => {
 
   const agregarInvocacionJugador = (id) => {   // <<<===================== FUNCION PARA AGREGAR INVOCACION AL JUGADOR
     let invo = findInvocacionById(id, invocaciones)
-    jugador.addInvocaciones(invo)
+    jugador.addInvocaciones(invo)         ============================================
     jugador.modificarInvocacionElegida(invo)
     toggleComponent('PantallaCombate')
     console.log(jugador);

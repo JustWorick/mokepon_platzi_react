@@ -15,11 +15,11 @@ export class Habilidad{
     }
 
     usarHabilidad() {
-        if (this.caster && this.objetivo) {
-            this.efecto(this.caster,this.objetivo);
-        } else {
-            console.error('Caster u objetivo no establecidos');
-        }
+        this.efecto(this.caster,this.objetivo);
+    }
+
+    usarAutoHabilidad(){
+        this.efecto(this.caster)
     }
 
     modificarCasterAndObjetivo(caster, objetivo) {
@@ -29,10 +29,6 @@ export class Habilidad{
 
     modificarMensajeHistorial(mensaje){
         this.mensajeHistorial = mensaje;
-    }
-
-    modificarIdRandom(){
-        this.id = getRandomNumber(1,100)
     }
 
 }
@@ -199,7 +195,7 @@ export function crearHabilidades(){
             console.log('la vida actual del Caster es : ' + caster.stats.saludActual); 
         }
     )
-    const hab6 = new Habilidad(5, 'Apuntar', 'Normal', Infinity, 'Apunta el revolver, Asegura "Tiro Preciso"',
+    const hab6 = new Habilidad(5, 'Apuntar', 'Normal', Infinity, 'Apunta el revolver, Asegura Tiro Preciso',
         function(caster, objetivo){
             console.log('========================================APUNTAR========================================');
             caster.estados.push('Apuntando')

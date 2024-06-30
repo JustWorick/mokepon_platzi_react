@@ -2,9 +2,11 @@ import React, { useContext, useEffect, useState, useRef } from 'react';
 import { GlobalStateContext } from '../components/globalState.jsx';
 import { crearEstados } from '../components/estados.js';
 import { getRandomNumber } from '../components/habilidades.js';
+import '../style/pantallaCombatte.css'
+
 
 const PantallaCombate = ({ isActive }) => {
-  const { toggleComponent, jugador, enemigo, skills } = useContext(GlobalStateContext);
+  const { toggleComponent, jugador, enemigo, skills, activeComponent } = useContext(GlobalStateContext);
   const [ activeDiv, setActiveDiv ] = useState(false)
   const [ jugadorEnCombate, setJugadorEnCombate ] = useState(null)
   const [ enemigoEnCombate, setEnemigoEnCombate ] = useState(null)
@@ -14,10 +16,9 @@ const PantallaCombate = ({ isActive }) => {
   const [ miTurno, setMiTurno ] = useState(null);
   const [ historial, setHistorial ] = useState([])
   
-  const [ estados, setEstados ] = useState(null) // <<<=====================================MAP DE ESTADOS CON SUS RESPECTIVA DURACION EN TURNOS
+  const [ estados, setEstados ] = useState() // <<<=====================================MAP DE ESTADOS CON SUS RESPECTIVA DURACION EN TURNOS
   const [ timeEstados, setTimeEstados ] = useState([]) // <<<===========================ESTADOS EN PERSONAJES, ESTA ES LA QUE CAMBIA
   const timeEstadosAnterior = useRef(timeEstados)
-  
 
   const cambiarDivTo = (divDestino) => {
     setActiveDiv(divDestino)
@@ -26,6 +27,7 @@ const PantallaCombate = ({ isActive }) => {
   function startCombate(){
     const newEstados = crearEstados() // <<<========== SE CREAN LOS ESTADOS
     setEstados(newEstados)
+    setHistorial(['Historial Creado'])
 
     setRonda(1)
     console.log('<<<==================================================== fUNC START COMBATE');
@@ -40,9 +42,8 @@ const PantallaCombate = ({ isActive }) => {
         setMiTurno(false)
         console.log('Es Turno del Enemigo');
       }
-      console.log('Jugador en combate y Enemigo en combate se estan leyendo');
+      console.log('<<<====================================================Gestor de turnos de   esta Leyendo');
     }
-    console.log('<<<====================================================Gestor de turnos de esta Leyendo');
   }
 
   function ataqueEnemigo(){
@@ -52,65 +53,110 @@ const PantallaCombate = ({ isActive }) => {
 
     let contadorTurnoActual = contadorTurno + 1
     setContadorTurno(contadorTurnoActual)
+
+    console.log('============================================================================================================================================== TURNO DEL ENEMIGO');
+
   }
 
   function ataqueJugador(idFuncEfecto){
-    jugadorEnCombate.invocacionElegida.habilidades[idFuncEfecto].usarHabilidad()
+    jugadorEnCombate.invocacionElegida.habilidades.find(elemento => elemento.id === idFuncEfecto)
     setMiTurno(false)
+    console.log(jugadorEnCombate.invocacionElegida.habilidades[idFuncEfecto]);
 
     let contadorTurnoActual = contadorTurno + 1
     setContadorTurno(contadorTurnoActual)
+
+    console.log('============================================================================================================================================== TURNO DEL JUGADOR');
   }
 
 
   useEffect(() => {  // <<<<<=============================== GESTOR DE ACCIONES
-    if(ronda === 0){
-      startCombate()
+    if(activeComponent === 'PantallaCombate'){
+      if(ronda === 0){
+        startCombate()
+      }
+  
+      if(miTurno === null){
+        gestorDeTurnos()  
+      }
+  
+      if(miTurno === false){  // <<<=============================== LANZA EL ATAQUE ENEMIGO
+        ataqueEnemigo()
+      }
+  
+      if(contadorTurno > 2){  // <<<===================================== MANEJA LAS RONDAS
+        let rondaActual = ronda + 1
+        setRonda(rondaActual)
+        
+        setContadorTurno(1)
+        console.log('Es la ronda N°: ' + ronda);
+      }
+  
+      //console.log(`La ronda Actual es: ${ronda}, el contador de ronda es: ${contadorTurno} y el miTurno es: ${miTurno}`);
     }
-
-    gestorDeTurnos()  
-
-    if(miTurno === false){  // <<<=============================== LANZA EL ATAQUE ENEMIGO
-      ataqueEnemigo()
-    }
-
-    if(contadorTurno >= 3){  // <<<===================================== MANEJA LAS RONDAS
-      let rondaActual = ronda + 1
-      setRonda(rondaActual)
-      
-      setContadorTurno(1)
-      console.log('Es la ronda N°: ' + ronda);
-    }
-
-    console.log(`La ronda Actual es: ${ronda}, el contador de ronda es: ${contadorTurno} y el miTurno es: ${miTurno}`);
-    console.log(`El Jugador en combate es: ${jugadorEnCombate} y el Enemigo en combate es: ${enemigoEnCombate}`);
-    console.log(jugadorEnCombate);
-    console.log(enemigoEnCombate);
-  },[miTurno, contadorTurno, ronda, jugadorEnCombate, activeDiv])
+  },[miTurno, contadorTurno, ronda, activeComponent])
   
 
-  useEffect(()=>{
-    setJugadorEnCombate(jugador)
-    setEnemigoEnCombate(enemigo)
-  },[jugador, enemigo, skills])
+  useEffect(()=>{  // <<<================================================= TRABAJAMOS CON COPIAS DE JUGADOR Y ENEMIGO PARA EVITAR PROBLEMAS
+    if(activeComponent === 'PantallaCombate' && jugadorEnCombate === null){
+      setJugadorEnCombate(jugador)
+      setEnemigoEnCombate(enemigo)
+    }
+
+    if(activeComponent === 'PantallaCombate' && jugadorEnCombate){
+      jugadorEnCombate.invocacionElegida.modificarIdRandom()
+      enemigoEnCombate.invocacionElegida.modificarIdRandom()
+      console.log('=========================================================================ESTO NO DEBERIA SALIR MAS DE 1 VEZ');
+    }
+  },[activeComponent, jugadorEnCombate])
   
-  
+
+
+
+
+
+
   return (
-    <div className={`${isActive ? 'active' : 'inactive'}`}>
+    <div className={`${isActive ? 'active' : 'inactive'} h-100 w-100`}>
       {jugadorEnCombate != null && jugadorEnCombate.invocacionElegida && (
         <div className='d-flex flex-column h-100 w-100'>
-          <section>
+          <section className='d-flex justify-content-between border border-primary h-50'>
             {/* ===================================== ESCENARIO =================================================================*/}
+            <div className='d-flex flex-column w-50 ms-4 mt-2'>
+              <div className="vida-container">
+                {jugadorEnCombate && jugadorEnCombate.invocacionElegida && (
+                  <div className="vida-barra text-center" id="vidaBarra">{Math.floor(jugadorEnCombate.invocacionElegida.stats.saludActual)} / {jugadorEnCombate.invocacionElegida.stats.saludMaxima}</div>
+                )}
+              </div>
 
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ut nulla itaque sint reprehenderit quidem eaque iure impedit beatae unde alias asperiores saepe, amet harum deserunt exercitationem possimus atque, consequatur quisquam.</p>
+              <div>
+                <span>{jugadorEnCombate.invocacionElegida.nombre}</span>
+              </div>
+
+            </div>
+
+            <div className='d-flex flex-column w-50 align-items-end me-4 mt-2'>
+              <div className="vida-container">
+                {enemigoEnCombate && enemigoEnCombate.invocacionElegida && (
+                  <div className="vida-barra text-center" id="vidaBarra">{Math.floor(enemigoEnCombate.invocacionElegida.stats.saludActual)} / {enemigoEnCombate.invocacionElegida.stats.saludMaxima}</div>
+                )}
+              </div>
+
+              <div>
+                <span>{enemigoEnCombate.invocacionElegida.nombre}</span>
+              </div>
+
+            </div>
+
           </section>
           
-          <section className='d-flex align-items-center'>
+          <section className='d-flex align-items-center border border-danger h-50'>
+            <div className=' h-50 w-50'>
               {historial && historial.map((texto) => 
-                <div className=' h-50 w-50'>
-                    <p>{texto}</p>
-                </div>
-              )}
+                    <p key={texto}>{texto}</p>
+                  )}
+              <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illum, perferendis? Aspernatur ut ea sint at, vero voluptatem amet ab sequi eaque repellendus dolor, mollitia iusto voluptas nostrum et neque modi.</p>
+            </div>
 
             <div>
               {/* ============================================= MENU DE ACCION ====================================================== */}
